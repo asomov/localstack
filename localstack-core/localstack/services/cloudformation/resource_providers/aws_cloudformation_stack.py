@@ -101,12 +101,10 @@ class CloudFormationStackProvider(ResourceProvider[CloudFormationStackProperties
                 custom_context=request.custom_context,
             )
 
-        stack = request.aws_client_factory.cloudformation.describe_stacks(StackName=model["Id"])[
-            "Stacks"
-        ][0]
+        stack = request.aws_client_factory.cloudformation.describe_stacks(StackName=model["Id"])["Stacks"][0]
         match stack["StackStatus"]:
             case "CREATE_COMPLETE":
-                # only store nested stack outputs when we know the deploy has completed
+                # only store nested stack outputs when we know the deployment has completed
                 model["Outputs"] = {
                     o["OutputKey"]: o["OutputValue"] for o in stack.get("Outputs", [])
                 }

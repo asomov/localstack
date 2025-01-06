@@ -412,8 +412,9 @@ class KinesisFirehoseDeliveryStreamProvider(
                 resource_model=model,
                 custom_context=request.custom_context,
             )
+        # REPEATED_INVOCATION 
         # TODO add handler for CREATE FAILED state
-        stream = firehose.describe_delivery_stream(DeliveryStreamName=model["DeliveryStreamName"])
+        stream = firehose.describe_delivery_stream(DeliveryStreamName=attrs["DeliveryStreamName"])
         if stream["DeliveryStreamDescription"]["DeliveryStreamStatus"] != "ACTIVE":
             return ProgressEvent(
                 status=OperationStatus.IN_PROGRESS,
